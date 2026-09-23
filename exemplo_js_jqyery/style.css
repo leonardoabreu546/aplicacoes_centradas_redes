@@ -1,0 +1,52 @@
+
+.menu {
+    background-color: #444;
+}
+.menu li a {
+    color: white;
+}
+.menu li a:hover {
+    background-color: #111111;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    text-align: center;
+    padding: 16px;
+    text-decoration: none;
+}
+
+li button {
+    display: block;
+    text-align: center;
+    padding: 16px;
+    text-decoration: none;
+    margin: 10px;
+}
+
+.menu-clear {
+    background-color: white;
+  }
+.menu-clear li a {
+    color: black;
+}
+
+.spaced {
+    margin: 20px;
+}
+
+#nameList li {
+    margin: 15px;
+    text-decoration: none;
+}
