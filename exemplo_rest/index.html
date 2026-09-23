@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REST API</title>
+    <link rel="stylesheet" href="./layout.css">
+    <script src="./action.js"></script>
+</head>
+<body>
+    <div class="button_area">
+        <h1>REST API</h1>
+        <button id="button1" onclick="getAllPosts();"> Lista de Posts </button>
+        <h3>Id do Post: <input type="text" name="" id="txt_post_id"></h3>
+        <button id="button2" onclick="getPostData();"> Dados do post (inserir Id)</button>
+        <button id="button3" onclick="getAllTasks();">Todas as Tarefas</button>
+        <button id="button4" onclick="getCompletedTasks();">Tarefas Completas</button>
+        <button id="button5" onclick="getAlbumCount();">Número de albuns (contar)</button>
+        <h3>Id do album: <input type="text" name="" id="txt_album_id"></h3>
+        <button id="button6" onclick="getFirstAlbumPicture();">Primeira foto do album (inserir Id)</button>
+        <button id="button6" onclick="getAlbumData();">Dados do album (inserir Id)</button>
+    </div>    
+    <div class="console_area">
+        <div class="console">
+        </div>
+    </div> 
+</body>
+</html>
