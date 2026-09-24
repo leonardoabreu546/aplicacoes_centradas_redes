@@ -1,0 +1,26 @@
+%cartao-base {
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: sans-serif;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+@mixin aplicar-tema($cor) {
+    border: 2px solid $cor;
+    color: $cor;
+}
+
+.alerta {
+  @extend %cartao-base;
+  @include aplicar-tema(green);
+}
+
+.alerta-erro {
+    @extend %cartao-base;
+    @include aplicar-tema(red);
+}
+

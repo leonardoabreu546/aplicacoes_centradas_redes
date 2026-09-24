@@ -1,0 +1,19 @@
+.alerta-erro, .alerta {
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: sans-serif;
+}
+.alerta-erro:hover, .alerta:hover {
+  transform: translateY(-2px);
+}
+
+.alerta {
+  border: 2px solid green;
+  color: green;
+}
+
+.alerta-erro {
+  border: 2px solid red;
+  color: red;
+}/*# sourceMappingURL=estilos.css.map */
