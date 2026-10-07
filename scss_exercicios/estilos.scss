@@ -9,7 +9,7 @@
   }
 }
 
-@mixin aplicar-tema($cor) {
+@mixin aplicar-ztema($cor) {
     border: 2px solid $cor;
     color: $cor;
 }
