@@ -45,7 +45,8 @@ class Product {
             {$shortDesc}... | 
             {$formattedValue} | 
             Stock: {$this->stock} 
-            [<a href='./product.php?id={$this->id}'>Editar</a>] 
+            [<a href='./product.php?id={$this->id}'>Editar</a>]
+            [<a href='./delete.php?id={$this->id}'>Apagar</a>]
             [<a href='./buy.php?id={$this->id}'>Comprar (+1)</a>] 
             [<a href='./sell.php?id={$this->id}'>Vender (-1)</a>]
         </li>

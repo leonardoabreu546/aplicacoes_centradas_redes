@@ -13,8 +13,8 @@ if (isset($_GET['id'])) {
     $searchId = $_GET['id'];
     
     // Procuramos o produto correspondente no array da sessão
-    if (isset($_SESSION['produtos'])) {
-        foreach ($_SESSION['produtos'] as $produto) {
+    if (isset($_SESSION['products'])) {
+        foreach ($_SESSION['products'] as $produto) {
             if ($produto->id == $searchId) {
                 $id = $produto->id;
                 $name = $produto->name;
