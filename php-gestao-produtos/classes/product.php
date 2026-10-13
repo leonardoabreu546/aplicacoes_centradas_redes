@@ -40,7 +40,7 @@ class Product {
 
         $html = <<<HTML
         <li>
-            <strong>Produto {$this->id}</strong> - 
+            <strong>Produto {$this->id}</strong>
             {$this->name} | 
             {$shortDesc}... | 
             {$formattedValue} | 
