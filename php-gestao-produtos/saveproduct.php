@@ -1,7 +1,6 @@
 <?php
 require_once 'classes/product.php';
 session_start();
-session_start();
 
 Product::initClass(); // Sincroniza o contador $lastId com a sessão
 
