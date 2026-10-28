@@ -1,9 +1,9 @@
 <?php
-// Recolher os dados enviados por GET pelo formulário
-$username = $_GET['username'] ?? '';
-$name = $_GET['name'] ?? '';
-$address = $_GET['address'] ?? '';
-$email = $_GET['email'] ?? '';
+// Recolher os dados enviados por POST pelo formulário
+$username = $_POST['username'] ?? '';
+$name = $_POST['name'] ?? '';
+$address = $_POST['address'] ?? '';
+$email = $_POST['email'] ?? '';
 
 if (!empty($username) && !empty($name) && !empty($address) && !empty($email)) {
     try {
