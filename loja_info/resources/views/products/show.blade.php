@@ -20,6 +20,7 @@
         <p><strong>Stock Disponível:</strong> {{ $product->Stock }} unidades</p>
         <p><strong>Descrição:</strong> {{ $product->Description }}</p>
         
+        <a href="/products/{{ $product->id }}/edit" style="background: #ffc107; color: #000; padding: 10px 15px; text-decoration: none; border-radius: 4px; margin-right: 10px;">Editar / Stock</a>
         <a href="/products" class="back-btn">← Voltar à Lista</a>
     </div>
 </body>

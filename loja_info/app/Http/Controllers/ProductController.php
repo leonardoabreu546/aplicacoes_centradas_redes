@@ -24,4 +24,26 @@ class ProductController extends Controller
         // Retornar a vista de detalhes
         return view('products.show', compact('product'));
     }
+
+    public function edit($id)
+    {
+        $product = Product::findOrFail($id);
+        $categories = \App\Models\Category::all(); // Para permitir escolher a categoria se necessário
+        return view('products.edit', compact('product', 'categories'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $product = Product::findOrFail($id);
+        
+        // Atualizar os campos (com foco especial no stock)
+        $product->update([
+            'Name' => $request->input('Name'),
+            'Price' => $request->input('Price'),
+            'Stock' => $request->input('Stock'),
+            'Description' => $request->input('Description'),
+        ]);
+
+        return redirect('/products/' . $product->id)->with('success', 'Produto atualizado com sucesso!');
+    }
 }
