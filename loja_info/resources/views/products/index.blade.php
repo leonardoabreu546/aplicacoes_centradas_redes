@@ -5,14 +5,20 @@
     <title>Loja Info - Produtos</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 40px; background: #f4f4f9; }
-        h1 { color: #333; }
-        table { width: 100%; border-collapse: collapse; background: #fff; margin-top: 20px; }
+        h1 { color: #333; margin-bottom: 5px; }
+        .header-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .btn-add { background: #28a745; color: white; padding: 10px 15px; text-decoration: none; border-radius: 4px; font-weight: bold; }
+        .btn-add:hover { background: #218838; }
+        table { width: 100%; border-collapse: collapse; background: #fff; }
         th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
         th { background-color: #007bff; color: white; }
     </style>
 </head>
 <body>
-    <h1>Lista de Produtos - Computer Shop</h1>
+    <div class="header-container">
+        <h1>Lista de Produtos - Computer Shop</h1>
+        <a href="/products/create" class="btn-add">+ Adicionar Produto</a>
+    </div>
     
     <table>
         <thead>

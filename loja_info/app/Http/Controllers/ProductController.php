@@ -46,4 +46,24 @@ class ProductController extends Controller
 
         return redirect('/products/' . $product->id)->with('success', 'Produto atualizado com sucesso!');
     }
+
+    public function create()
+    {
+        $categories = \App\Models\Category::all(); // Para preencher o select de categorias
+        return view('products.create', compact('categories'));
+    }
+
+    public function store(Request $request)
+    {
+        // Validar e criar o novo produto
+        Product::create([
+            'Name' => $request->input('Name'),
+            'category_id' => $request->input('category_id'),
+            'Price' => $request->input('Price'),
+            'Stock' => $request->input('Stock'),
+            'Description' => $request->input('Description'),
+        ]);
+
+        return redirect('/products')->with('success', 'Produto criado com sucesso!');
+    }
 }
