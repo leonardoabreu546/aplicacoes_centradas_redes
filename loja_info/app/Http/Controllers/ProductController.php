@@ -15,4 +15,13 @@ class ProductController extends Controller
         // Retornar uma vista com os produtos
         return view('products.index', compact('products'));
     }
+
+    public function show($id)
+    {
+        // Encontrar o produto pelo ID ou dar erro 404 se não existir
+        $product = Product::with('category')->findOrFail($id);
+
+        // Retornar a vista de detalhes
+        return view('products.show', compact('product'));
+    }
 }
