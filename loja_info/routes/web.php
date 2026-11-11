@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -15,6 +16,13 @@ Route::get('/products/{id}', [ProductController::class, 'show']);
 Route::get('/products/{id}/edit', [ProductController::class, 'edit']);
 Route::put('/products/{id}', [ProductController::class, 'update']);
 Route::get('/categorias/{id}/produtos', [ProductController::class, 'indexByCategory'])->name('categories.products');
+
+Route::get('/categorias', [CategoryController::class, 'index'])->middleware('auth')->name('categories.index');
+Route::get('/categorias/create', [CategoryController::class, 'create'])->middleware('auth')->name('categories.create');
+Route::post('/categorias/store', [CategoryController::class, 'store'])->middleware('auth')->name('categories.store');
+Route::get('/categorias/edit/{id}', [CategoryController::class, 'edit'])->middleware('auth')->name('categories.edit');
+Route::put('/categorias/update/{id}', [CategoryController::class, 'update'])->middleware('auth')->name('categories.update');
+Route::delete('/categorias/{id}', [CategoryController::class, 'destroy'])->middleware('auth')->name('categories.destroy');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
