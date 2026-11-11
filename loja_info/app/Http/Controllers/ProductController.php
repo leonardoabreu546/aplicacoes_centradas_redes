@@ -5,23 +5,24 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
     public function indexByCategory($id)
     {
-        $categories = Category::all();
+        $categorias = Category::all();
 
         if ($id == 0) {
-            $products = Product::with('category')->get();
+            $produtos = Product::all();
         } else {
-            $category = Category::findOrFail($id);
-            $products = $category->products; // Usa a relação hasMany definida no Model Category
+            $categoria = Category::findOrFail($id);
+            $produtos = $categoria->products;
         }
 
         return view('products.index', [
-            'products' => $products,
-            'categories' => $categories,
+            'produtos' => $produtos,
+            'categorias' => $categorias,
             'idCategoriaAtiva' => $id
         ]);
     }
@@ -33,52 +34,86 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        // Encontrar o produto pelo ID ou dar erro 404 se não existir
-        $product = Product::with('category')->findOrFail($id);
+        $produto = Product::findOrFail($id);
+        $categoria = $produto->category;
 
-        // Retornar a vista de detalhes
-        return view('products.show', compact('product'));
-    }
-
-    public function edit($id)
-    {
-        $product = Product::findOrFail($id);
-        $categories = Category::all(); // Para permitir escolher a categoria se necessário
-        return view('products.edit', compact('product', 'categories'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $product = Product::findOrFail($id);
-        
-        // Atualizar os campos (com foco especial no stock)
-        $product->update([
-            'Name' => $request->input('Name'),
-            'Price' => $request->input('Price'),
-            'Stock' => $request->input('Stock'),
-            'Description' => $request->input('Description'),
-        ]);
-
-        return redirect('/products/' . $product->id)->with('success', 'Produto atualizado com sucesso!');
+        return view('products.show', compact('produto', 'categoria'));
     }
 
     public function create()
     {
-        $categories = Category::all(); // Para preencher o select de categorias
-        return view('products.create', compact('categories'));
+        if (!Auth::user() || !Auth::user()->isAdmin) {
+            return back();
+        }
+
+        $categorias = Category::all();
+        return view('products.create', compact('categorias'));
     }
 
     public function store(Request $request)
     {
-        // Validar e criar o novo produto
-        Product::create([
-            'Name' => $request->input('Name'),
-            'category_id' => $request->input('category_id'),
-            'Price' => $request->input('Price'),
-            'Stock' => $request->input('Stock'),
-            'Description' => $request->input('Description'),
-        ]);
+        if (!Auth::user() || !Auth::user()->isAdmin) {
+            return back();
+        }
 
-        return redirect('/products')->with('success', 'Produto criado com sucesso!');
+        $produto = new Product();
+        $produto->Name = $request->input('name');
+        $produto->Description = $request->input('desc');
+        $produto->Cost = $request->input('cost');
+        $produto->category_id = $request->input('cat');
+        $produto->owner_id = Auth::user()->id;
+        
+        // Se estiveres a usar Cloudinary ou upload normal:
+        $produto->img = $request->input('img') ?? '/img/default.jpg';
+        
+        $produto->save();
+
+        return redirect(route('products.show', $produto->id));
+    }
+
+    public function edit($id)
+    {
+        if (!Auth::user() || !Auth::user()->isAdmin) {
+            return back();
+        }
+
+        $produto = Product::findOrFail($id);
+        $categorias = Category::all();
+        
+        return view('products.create', compact('produto', 'categorias'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        if (!Auth::user() || !Auth::user()->isAdmin) {
+            return back();
+        }
+
+        $produto = Product::findOrFail($id);
+        
+        $produto->Name = $request->input('name');
+        $produto->Description = $request->input('desc');
+        $produto->Cost = $request->input('cost');
+        $produto->category_id = $request->input('cat');
+        
+        if ($request->filled('img')) {
+            $produto->img = $request->input('img');
+        }
+
+        $produto->save();
+
+        return redirect(route('products.show', $produto->id));
+    }
+
+    public function destroy($id)
+    {
+        if (!Auth::user() || !Auth::user()->isAdmin) {
+            return back();
+        }
+
+        $produto = Product::findOrFail($id);
+        $produto->delete();
+
+        return redirect(route('products.index'));
     }
 }
