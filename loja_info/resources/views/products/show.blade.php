@@ -1,27 +1,67 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ $product->Name }} - Computer Shop</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; background: #f4f4f9; }
-        .card { background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); max-width: 600px; }
-        h1 { color: #333; }
-        p { font-size: 16px; line-height: 1.5; color: #555; }
-        .price { font-size: 24px; color: #007bff; font-weight: bold; }
-        .back-btn { display: inline-block; margin-top: 20px; text-decoration: none; background: #6c757d; color: white; padding: 10px 15px; border-radius: 4px; }
-    </style>
-</head>
-<body>
-    <div class="card">
-        <h1>{{ $product->Name }}</h1>
-        <p><strong>Categoria:</strong> {{ $product->category->Name ?? 'Sem Categoria' }}</p>
-        <p class="price">{{ $product->Price }} €</p>
-        <p><strong>Stock Disponível:</strong> {{ $product->Stock }} unidades</p>
-        <p><strong>Descrição:</strong> {{ $product->Description }}</p>
-        
-        <a href="/products/{{ $product->id }}/edit" style="background: #ffc107; color: #000; padding: 10px 15px; text-decoration: none; border-radius: 4px; margin-right: 10px;">Editar / Stock</a>
-        <a href="/products" class="back-btn">← Voltar à Lista</a>
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            Detalhes do Produto - Computer Shop
+        </h2>
+    </x-slot>
+
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 flex justify-center">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-8 w-full max-w-2xl text-gray-900">
+                
+                <h1 class="text-2xl font-bold text-gray-800 mb-4">{{ $produto->Name }}</h1>
+                
+                <!-- Imagem do Produto -->
+                @if($produto->img)
+                    <div class="mb-6 flex justify-center">
+                        <img src="{{ $produto->img }}" alt="{{ $produto->Name }}" class="max-h-64 object-contain rounded-md shadow">
+                    </div>
+                @endif
+
+                <div class="space-y-3 mb-6">
+                    <p><strong>Categoria:</strong> {{ $produto->category->Name ?? 'Sem Categoria' }}</p>
+                    <p class="text-2xl font-bold text-blue-600"><strong>Preço:</strong> {{ number_format($produto->Price, 2, ',', '.') }} €</p>
+                    <p><strong>Stock Disponível:</strong> {{ $produto->Stock }} unidades</p>
+                    <p><strong>Descrição:</strong> {{ $produto->Description }}</p>
+                </div>
+                
+                <div class="flex flex-wrap gap-3 items-center justify-between pt-4 border-t border-gray-200">
+                    <div class="flex gap-2">
+                        <!-- Botão Voltar -->
+                        <a href="{{ route('products.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md font-semibold text-sm">
+                            ← Voltar à Lista
+                        </a>
+
+                        <!-- Botão Comprar (para Clientes) -->
+                        @if(Auth::user() && !Auth::user()->isAdmin)
+                            <form action="{{ route('sales.store', $produto->id) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md font-semibold text-sm">
+                                    Comprar
+                                </button>
+                            </form>
+                        @endif
+                    </div>
+
+                    <!-- Botões de Admin (Editar / Eliminar) -->
+                    @if(Auth::user() && Auth::user()->isAdmin)
+                        <div class="flex gap-2">
+                            <a href="{{ route('products.edit', $produto->id) }}" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-md font-semibold text-sm">
+                                Editar
+                            </a>
+
+                            <form action="{{ route('products.destroy', $produto->id) }}" method="POST" onsubmit="return confirm('Tens a certeza que pretendes eliminar este produto?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md font-semibold text-sm">
+                                    Eliminar
+                                </button>
+                            </form>
+                        </div>
+                    @endif
+                </div>
+
+            </div>
+        </div>
     </div>
-</body>
-</html>
+</x-app-layout>
