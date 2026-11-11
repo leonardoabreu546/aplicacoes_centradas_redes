@@ -46,8 +46,8 @@ class ProductController extends Controller
             return back();
         }
 
-        $categorias = Category::all();
-        return view('products.create', compact('categorias'));
+        $categories = Category::all();
+        return view('products.create', compact('categories'));
     }
 
     public function store(Request $request)
@@ -57,14 +57,11 @@ class ProductController extends Controller
         }
 
         $produto = new Product();
-        $produto->Name = $request->input('name');
-        $produto->Description = $request->input('desc');
-        $produto->Cost = $request->input('cost');
-        $produto->category_id = $request->input('cat');
-        $produto->owner_id = Auth::user()->id;
-        
-        // Se estiveres a usar Cloudinary ou upload normal:
-        $produto->img = $request->input('img') ?? '/img/default.jpg';
+        $produto->Name = $request->input('Name');
+        $produto->Description = $request->input('Description');
+        $produto->Price = $request->input('Price');
+        $produto->Stock = $request->input('Stock');
+        $produto->category_id = $request->input('category_id');
         
         $produto->save();
 
@@ -78,9 +75,9 @@ class ProductController extends Controller
         }
 
         $produto = Product::findOrFail($id);
-        $categorias = Category::all();
+        $categories = Category::all();
         
-        return view('products.create', compact('produto', 'categorias'));
+        return view('products.create', compact('produto', 'categories'));
     }
 
     public function update(Request $request, $id)
@@ -91,14 +88,11 @@ class ProductController extends Controller
 
         $produto = Product::findOrFail($id);
         
-        $produto->Name = $request->input('name');
-        $produto->Description = $request->input('desc');
-        $produto->Cost = $request->input('cost');
-        $produto->category_id = $request->input('cat');
-        
-        if ($request->filled('img')) {
-            $produto->img = $request->input('img');
-        }
+        $produto->Name = $request->input('Name');
+        $produto->Description = $request->input('Description');
+        $produto->Price = $request->input('Price');
+        $produto->Stock = $request->input('Stock');
+        $produto->category_id = $request->input('category_id');
 
         $produto->save();
 
