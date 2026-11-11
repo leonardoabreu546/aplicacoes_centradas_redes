@@ -3,17 +3,32 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Category;
 use App\Models\Product;
 
 class ProductController extends Controller
 {
+    public function indexByCategory($id)
+    {
+        $categories = Category::all();
+
+        if ($id == 0) {
+            $products = Product::with('category')->get();
+        } else {
+            $category = Category::findOrFail($id);
+            $products = $category->products; // Usa a relação hasMany definida no Model Category
+        }
+
+        return view('products.index', [
+            'products' => $products,
+            'categories' => $categories,
+            'idCategoriaAtiva' => $id
+        ]);
+    }
+
     public function index()
     {
-        // Ir buscar todos os produtos com a respetiva categoria
-        $products = Product::with('category')->get();
-
-        // Retornar uma vista com os produtos
-        return view('products.index', compact('products'));
+        return $this->indexByCategory(0);
     }
 
     public function show($id)
@@ -28,7 +43,7 @@ class ProductController extends Controller
     public function edit($id)
     {
         $product = Product::findOrFail($id);
-        $categories = \App\Models\Category::all(); // Para permitir escolher a categoria se necessário
+        $categories = Category::all(); // Para permitir escolher a categoria se necessário
         return view('products.edit', compact('product', 'categories'));
     }
 
@@ -49,7 +64,7 @@ class ProductController extends Controller
 
     public function create()
     {
-        $categories = \App\Models\Category::all(); // Para preencher o select de categorias
+        $categories = Category::all(); // Para preencher o select de categorias
         return view('products.create', compact('categories'));
     }
 
