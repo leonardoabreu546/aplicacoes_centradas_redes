@@ -2,7 +2,7 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <title>Adicionar Novo Produto - Computer Shop</title>
+    <title>{{ isset($produto) ? 'Editar Produto' : 'Adicionar Novo Produto' }} - Computer Shop</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 40px; background: #f4f4f9; }
         .card { background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); max-width: 600px; }
@@ -17,14 +17,17 @@
 </head>
 <body>
     <div class="card">
-        <h1>Adicionar Novo Produto</h1>
+        <h1>{{ isset($produto) ? 'Editar Produto: ' . $produto->Name : 'Adicionar Novo Produto' }}</h1>
         
-        <form action="/products" method="POST">
+        <form action="{{ isset($produto) ? route('products.update', $produto->id) : route('products.store') }}" method="POST">
             @csrf
+            @if(isset($produto))
+                @method('PUT')
+            @endif
 
             <div class="form-group">
                 <label>Nome:</label>
-                <input type="text" name="Name" required>
+                <input type="text" name="Name" value="{{ old('Name', $produto->Name ?? '') }}" required>
             </div>
 
             <div class="form-group">
@@ -32,30 +35,32 @@
                 <select name="category_id" required>
                     <option value="">Selecione uma categoria</option>
                     @foreach($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->Name }}</option>
+                        <option value="{{ $category->id }}" {{ (old('category_id', $produto->category_id ?? '') == $category->id) ? 'selected' : '' }}>
+                            {{ $category->Name }}
+                        </option>
                     @endforeach
                 </select>
             </div>
 
             <div class="form-group">
                 <label>Preço (€):</label>
-                <input type="number" step="0.01" name="Price" required>
+                <input type="number" step="0.01" name="Price" value="{{ old('Price', $produto->Price ?? '') }}" required>
             </div>
 
             <div class="form-group">
                 <label>Stock Inicial:</label>
-                <input type="number" name="Stock" required>
+                <input type="number" name="Stock" value="{{ old('Stock', $produto->Stock ?? '') }}" required>
             </div>
 
             <div class="form-group">
                 <label>Descrição:</label>
-                <textarea name="Description" rows="4"></textarea>
+                <textarea name="Description" rows="4">{{ old('Description', $produto->Description ?? '') }}</textarea>
             </div>
 
-            <button type="submit" class="btn">Guardar Produto</button>
+            <button type="submit" class="btn">{{ isset($produto) ? 'Atualizar Produto' : 'Guardar Produto' }}</button>
         </form>
 
-        <a href="/products" class="back-link">← Voltar à Lista</a>
+        <a href="{{ route('products.index') }}" class="back-link">← Voltar à Lista</a>
     </div>
 </body>
 </html>

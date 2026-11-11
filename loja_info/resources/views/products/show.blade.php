@@ -45,12 +45,12 @@
 
                     <!-- Botões de Admin (Editar / Eliminar) -->
                     @if(Auth::user() && Auth::user()->isAdmin)
-                        <div class="flex gap-2">
-                            <a href="{{ route('products.edit', $produto->id) }}" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-md font-semibold text-sm">
+                        <div class="flex gap-2 items-center">
+                            <a href="{{ route('products.edit', $produto->id) }}" style="background-color: #f59e0b; color: white; padding: 8px 16px; border-radius: 6px; font-weight: 600; font-size: 0.875rem; text-decoration: none; display: inline-block;">
                                 Editar
                             </a>
 
-                            <form action="{{ route('products.destroy', $produto->id) }}" method="POST" onsubmit="return confirm('Tens a certeza que pretendes eliminar este produto?');">
+                            <form action="{{ route('products.destroy', $produto->id) }}" method="POST" onsubmit="return confirm('Tens a certeza que pretendes eliminar este produto?');" style="margin: 0;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md font-semibold text-sm">
